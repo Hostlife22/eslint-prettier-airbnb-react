@@ -89,7 +89,7 @@ $pkg_cmd -D eslint prettier eslint-plugin-react-hooks
 echo
 echo -e "2/4 ${YELLOW}Conforming to Airbnb's JavaScript Style Guide... ${NC}"
 echo
-$pkg_cmd -D eslint-config-airbnb eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react @babel/eslint-parser
+$pkg_cmd -D eslint-config-airbnb eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react @babel/eslint-parser @babel/preset-react
 
 echo
 echo -e "3/4 ${LCYAN}Making ESlint and Prettier play nice with each other... ${NC}"
@@ -114,7 +114,11 @@ else
   ],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
+      "babelOptions": {
+        "presets": ["@babel/preset-react"],
+    },
     "ecmaVersion": 8,
+    "requireConfigFile": false,
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
       "impliedStrict": true,
@@ -138,6 +142,13 @@ else
         "destructuring": "all"
       }
     ],
+     "array-element-newline": [
+      "error",
+      {
+        "ArrayExpression": "consistent",
+        "ArrayPattern": { "minItems": 3 },
+      },
+    ],
     "arrow-body-style": [
       2,
       "as-needed"
@@ -154,7 +165,7 @@ else
         "props": false
       }
     ],
-    "no-console": 0,
+    "no-console": 1,
     "import/prefer-default-export": 1,
     "import": 0,
     "func-names": 0,
@@ -173,7 +184,6 @@ else
     "react/no-unescaped-entities": 0,
     "jsx-a11y/accessible-emoji": 0,
     "react/require-default-props": 0,
-    "requireConfigFile": false,
     "react/jsx-filename-extension": [
       1,
       {
@@ -196,6 +206,7 @@ else
     "prettier/prettier": [
       "error",
       {
+        "endOfLine": "auto",
         "trailingComma": "'${trailing_comma_pref}'",
         "singleQuote": true,
         "printWidth": '${max_len_val}'
