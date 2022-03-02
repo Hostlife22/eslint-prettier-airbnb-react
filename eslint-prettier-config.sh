@@ -89,7 +89,7 @@ $pkg_cmd -D eslint prettier eslint-plugin-react-hooks
 echo
 echo -e "2/4 ${YELLOW}Conforming to Airbnb's JavaScript Style Guide... ${NC}"
 echo
-$pkg_cmd -D eslint-config-airbnb eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react babel-eslint
+$pkg_cmd -D eslint-config-airbnb eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react @babel/eslint-parser
 
 echo
 echo -e "3/4 ${LCYAN}Making ESlint and Prettier play nice with each other... ${NC}"
@@ -112,7 +112,7 @@ else
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended"
   ],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaVersion": 8,
     "ecmaFeatures": {
@@ -173,6 +173,7 @@ else
     "react/no-unescaped-entities": 0,
     "jsx-a11y/accessible-emoji": 0,
     "react/require-default-props": 0,
+    "requireConfigFile": false,
     "react/jsx-filename-extension": [
       1,
       {
