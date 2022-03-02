@@ -82,17 +82,17 @@ echo
 echo -e "${GREEN}Configuring your development environment... ${NC}"
 
 echo
-echo -e "1/4 ${LCYAN}ESLint & Prettier Installation... ${NC}"
+echo -e "1/5 ${LCYAN}ESLint & Prettier Installation... ${NC}"
 echo
 $pkg_cmd -D eslint prettier eslint-plugin-react-hooks
 
 echo
-echo -e "2/4 ${YELLOW}Conforming to Airbnb's JavaScript Style Guide... ${NC}"
+echo -e "2/5 ${YELLOW}Conforming to Airbnb's JavaScript Style Guide... ${NC}"
 echo
 $pkg_cmd -D eslint-config-airbnb eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react @babel/eslint-parser @babel/preset-react
 
 echo
-echo -e "3/4 ${LCYAN}Making ESlint and Prettier play nice with each other... ${NC}"
+echo -e "3/5 ${LCYAN}Making ESlint and Prettier play nice with each other... ${NC}"
 echo "See https://github.com/prettier/eslint-config-prettier for more details."
 echo
 $pkg_cmd -D eslint-config-prettier eslint-plugin-prettier
@@ -102,7 +102,7 @@ if [ "$skip_eslint_setup" == "true" ]; then
   break
 else
   echo
-  echo -e "4/4 ${YELLOW}Building your .eslintrc${config_extension} file...${NC}"
+  echo -e "4/5 ${YELLOW}Building your .eslintrc${config_extension} file...${NC}"
   > ".eslintrc${config_extension}" # truncates existing file (or creates empty)
 
   echo ${config_opening}'
@@ -229,6 +229,21 @@ else
   ]
 }' >> .eslintrc${config_extension}
 fi
+
+echo -e "5/5 ${YELLOW}Building your .editorconfig file... ${NC}"
+  > .editorconfig # truncates existing file (or creates empty)
+
+  echo '
+  root = true
+  [*.{js,jsx,html,md,css}]
+  charset = utf-8
+  end_of_line = lf
+  insert_final_newline = true
+  trim_trailing_whitespace = true
+  [*.{js,jsx,css}]
+  indent_size = 2
+  indent_style = space
+' >> .editorconfig
 
 echo
 echo -e "${GREEN}Finished setting up!${NC}"
