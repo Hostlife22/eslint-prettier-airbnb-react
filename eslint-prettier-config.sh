@@ -90,6 +90,21 @@ if [ -f ".prettierrc.js" -o -f "prettier.config.js" -o -f ".prettierrc.yaml" -o 
   echo
 fi
 
+# Checks for existing stylelint files
+if [ -f ".stylelintrc.js" -o -f "stylelintrc.config.js" -o -f ".stylelintrc.yaml" -o -f ".stylelintrc.yml" -o -f ".stylelintrc.json" -o -f ".stylelintrc.toml" -o -f ".stylelintrc" -o -f ".stylelintrc" ]; then
+  echo -e "${RED}Existing Stylelint config file(s) found${NC}"
+  ls -a | grep "stylelint*" | xargs -n 1 basename
+  echo
+  echo -e "${RED}CAUTION:${NC} The configuration file will be resolved starting from the location of the file being formatted, and searching up the file tree until a config file is (or isn't) found. https://stylelint.io/user-guide/configure"
+  echo
+  read -p  "Write .stylelintrc${config_extension} (Y/n)? "
+  if [[ $REPLY =~ ^[Nn]$ ]]; then
+    echo -e "${YELLOW}>>>>> Skipping Stylelint config${NC}"
+    skip_stylelint_setup="true"
+  fi
+  echo
+fi
+
 # ----------------------
 # Perform Configuration
 # ----------------------
@@ -97,27 +112,27 @@ echo
 echo -e "${GREEN}Configuring your development environment... ${NC}"
 
 echo
-echo -e "1/6 ${LCYAN}ESLint & Prettier Installation... ${NC}"
+echo -e "1/7 ${LCYAN}ESLint & Prettier & Stylelint  Installation... ${NC}"
 echo
-$pkg_cmd -D eslint prettier eslint-plugin-react-hooks
+$pkg_cmd -D eslint prettier stylelint eslint-plugin-react-hooks
 
 echo
-echo -e "2/6 ${YELLOW}Conforming to Airbnb's JavaScript Style Guide... ${NC}"
+echo -e "2/7 ${YELLOW}Conforming to Airbnb's JavaScript Style Guide... ${NC}"
 echo
-$pkg_cmd -D eslint-config-airbnb eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react @babel/eslint-parser @babel/preset-react
+$pkg_cmd -D eslint-config-airbnb eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react @babel/eslint-parser @babel/preset-react 
 
 echo
-echo -e "3/6 ${LCYAN}Making ESlint and Prettier play nice with each other... ${NC}"
+echo -e "3/7 ${LCYAN}Making ESlint/Stylelint  and Prettier play nice with each other... ${NC}"
 echo "See https://github.com/prettier/eslint-config-prettier for more details."
 echo
-$pkg_cmd -D eslint-config-prettier eslint-plugin-prettier
+$pkg_cmd -D eslint-config-prettier eslint-plugin-prettier stylelint-config-standard stylelint-config-rational-order stylelint-order
 
 
 if [ "$skip_eslint_setup" == "true" ]; then
   break
 else
   echo
-  echo -e "4/6 ${YELLOW}Building your .eslintrc${config_extension} file...${NC}"
+  echo -e "4/7 ${YELLOW}Building your .eslintrc${config_extension} file...${NC}"
   > ".eslintrc${config_extension}" # truncates existing file (or creates empty)
 
   echo ${config_opening}'
@@ -245,10 +260,12 @@ else
 }' >> .eslintrc${config_extension}
 fi
 
+
+
 if [ "$skip_prettier_setup" == "true" ]; then
   break
 else
-  echo -e "5/6 ${YELLOW}Building your .prettierrc${config_extension} file... ${NC}"
+  echo -e "5/7 ${YELLOW}Building your .prettierrc${config_extension} file... ${NC}"
   > .prettierrc${config_extension} # truncates existing file (or creates empty)
 
   echo ${config_opening}'
@@ -258,7 +275,32 @@ else
 }' >> .prettierrc${config_extension}
 fi
 
-echo -e "6/6 ${YELLOW}Building your .editorconfig file... ${NC}"
+
+
+if [ "$skip_stylelint_setup" == "true" ]; then
+  break
+else
+  echo
+  echo -e "6/7 ${YELLOW}Building your .stylelintrc${config_extension} file...${NC}"
+  > ".stylelintrc${config_extension}" # truncates existing file (or creates empty)
+
+  echo ${config_opening}'
+   "extends": ["stylelint-config-standard"],
+    "plugins": [
+      "stylelint-order",
+      "stylelint-config-rational-order/plugin"
+      ],
+      "rules": {
+      "order/properties-order": [],
+      "plugin/rational-order": [true, {
+        "border-in-box-model": false,
+        "empty-line-between-groups": false
+      }]
+      }
+}' >> .stylelintrc${config_extension}
+fi
+
+echo -e "7/7 ${YELLOW}Building your .editorconfig file... ${NC}"
   > .editorconfig # truncates existing file (or creates empty)
 
   echo '
