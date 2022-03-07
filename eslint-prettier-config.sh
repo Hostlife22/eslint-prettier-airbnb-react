@@ -239,10 +239,15 @@ else
         "endOfLine": "auto",
         "trailingComma": "'${trailing_comma_pref}'",
         "singleQuote": true,
-        "printWidth": '${max_len_val}'
+        "printWidth": '${max_len_val}',
+        "jsxBracketSameLine": true,
+        "semi": true,
       }
     ],
     "jsx-a11y/href-no-hash": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
     "jsx-a11y/anchor-is-valid": [
       "warn",
       {
@@ -271,7 +276,8 @@ else
   echo ${config_opening}'
   "printWidth": '${max_len_val}',
   "singleQuote": true,
-  "trailingComma": "'${trailing_comma_pref}'"
+  "trailingComma": "'${trailing_comma_pref}'",
+   "useTabs": false
 }' >> .prettierrc${config_extension}
 fi
 
@@ -295,7 +301,9 @@ else
       "plugin/rational-order": [true, {
         "border-in-box-model": false,
         "empty-line-between-groups": false
-      }]
+      }],
+      "selector-class-pattern": null,
+	    "keyframes-name-pattern": null
       }
 }' >> .stylelintrc${config_extension}
 fi
